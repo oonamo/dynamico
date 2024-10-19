@@ -4,4 +4,4 @@ build:
   gcc -o test tests/dynamico.c -O3
 
 test: build
-  test
+  ./test
