@@ -1,7 +1,7 @@
 #define DYNAMICO_GENERATE_ALL
 #define DYNAMICO_LOGGING
 
-#include "../vec.h"
+#include "../dynamico.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,7 +34,7 @@
 #define DYNAMICO_EVALUATE_TEST(name)                                           \
     do                                                                         \
     {                                                                          \
-        if (result == 1)                                                       \
+        if (result == DYNAMICO_FAIL)                                                       \
         {                                                                      \
             DYNAMICO_TEST_FAIL(name);                                          \
         }                                                                      \
@@ -53,7 +53,7 @@ int testInit()
     DYNAMICO_TEST("Dynamic Init");
 
     dynamico_Int newIntVec = {0};
-    WDEFER(dynamico_Int_init(&newIntVec), 1);
+    WDEFER(dynamico_Int_init(&newIntVec));
 
 defer:
     dynamico_Int_free(&newIntVec);
@@ -67,10 +67,10 @@ int testAppend()
     DYNAMICO_TEST("Dynamic Append");
 
     dynamico_Int newIntVec = {0};
-    WDEFER(dynamico_Int_init(&newIntVec), 1);
+    WDEFER(dynamico_Int_init(&newIntVec));
     for (int i = 0; i < 1000000; i++)
     {
-        WDEFER(dynamico_Int_append(&newIntVec, i), 1);
+        WDEFER(dynamico_Int_append(&newIntVec, i));
     }
     for (int i = 0; i < newIntVec.size; i++)
     {
@@ -96,7 +96,7 @@ int testShift()
     dynamico_Int_init(&intVec);
     for (int i = 0; i < TEST_VEC_SIZE; i++)
     {
-        WDEFER(dynamico_Int_append(&intVec, i), 1);
+        WDEFER(dynamico_Int_append(&intVec, i));
     }
     dynamico_Int_shift(&intVec);
     for (int i = 0; i < intVec.size; i++)
@@ -122,7 +122,7 @@ int testAt()
     dynamico_Int_init(&intVec);
     for (int i = 0; i < TEST_VEC_SIZE; i++)
     {
-        WDEFER(dynamico_Int_append(&intVec, i), 1);
+        WDEFER(dynamico_Int_append(&intVec, i));
     }
     for (int i = 0; i < intVec.size; i++)
     {
@@ -173,7 +173,7 @@ int testArbituaryStruct()
             .id = i,
         };
         s.parent = dynamico_Rand_at(&rand, i - 1);
-        WDEFER(dynamico_Rand_append(&rand, s), 1);
+        WDEFER(dynamico_Rand_append(&rand, s));
     }
 
     for (int i = 0; i < RAND_STRUCT_SIZE - 1; i++)
