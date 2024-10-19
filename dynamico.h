@@ -51,10 +51,10 @@
 #endif
 
 #ifndef WDEFER
-#define WDEFER(eval)                                                     \
+#define WDEFER(eval)                                                           \
     do                                                                         \
     {                                                                          \
-        if ((eval) == DYNAMICO_FAIL)                                                  \
+        if ((eval) == DYNAMICO_FAIL)                                           \
         {                                                                      \
             goto defer;                                                        \
         }                                                                      \
@@ -83,7 +83,7 @@
             (type *)malloc(sizeof(type) * DYNAMICO_INIT_CAPACITY);             \
         if (dynamic_object->data == NULL)                                      \
         {                                                                      \
-            return_defer(DYNAMICO_FAIL);                                                   \
+            return_defer(DYNAMICO_FAIL);                                       \
         }                                                                      \
         dynamic_object->capacity = DYNAMICO_INIT_CAPACITY;                     \
         dynamic_object->size = 0;                                              \
@@ -109,7 +109,7 @@
                         sizeof(type) * dynamic_object->capacity * 2);          \
             if (dynamic_object->data == NULL)                                  \
             {                                                                  \
-                return_defer(DYNAMICO_FAIL);                                               \
+                return_defer(DYNAMICO_FAIL);                                   \
             }                                                                  \
         }                                                                      \
         dynamic_object->data[dynamic_object->size++] = obj;                    \
