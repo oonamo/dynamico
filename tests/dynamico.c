@@ -5,42 +5,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DYNAMICO_TEST(name)                                                     \
+#define DYNAMICO_TEST(name)                                                    \
     fprintf(stderr,                                                            \
-            DYNAMICO_TERMINAL_YELLOW                                            \
-            "TEST " DYNAMICO_TERMINAL_GREEN name DYNAMICO_TERMINAL_RESET         \
-            " func(" DYNAMICO_TERMINAL_BLUE "%s" DYNAMICO_TERMINAL_RESET         \
+            DYNAMICO_TERMINAL_YELLOW                                           \
+            "TEST " DYNAMICO_TERMINAL_GREEN name DYNAMICO_TERMINAL_RESET       \
+            " func(" DYNAMICO_TERMINAL_BLUE "%s" DYNAMICO_TERMINAL_RESET       \
             "): %s\n",                                                         \
             __func__, __FILE__)
 
-#define DYNAMICO_TEST_PASS(name)                                                \
+#define DYNAMICO_TEST_PASS(name)                                               \
     fprintf(stderr,                                                            \
-            DYNAMICO_TERMINAL_YELLOW                                            \
-            "TEST " DYNAMICO_TERMINAL_GREEN name DYNAMICO_TERMINAL_RESET         \
-            " func(" DYNAMICO_TERMINAL_BLUE "%s" DYNAMICO_TERMINAL_RESET         \
-            "): %s " DYNAMICO_TERMINAL_GREEN "PASSED!" DYNAMICO_TERMINAL_RESET   \
+            DYNAMICO_TERMINAL_YELLOW                                           \
+            "TEST " DYNAMICO_TERMINAL_GREEN name DYNAMICO_TERMINAL_RESET       \
+            " func(" DYNAMICO_TERMINAL_BLUE "%s" DYNAMICO_TERMINAL_RESET       \
+            "): %s " DYNAMICO_TERMINAL_GREEN "PASSED!" DYNAMICO_TERMINAL_RESET \
             "\n",                                                              \
             __func__, __FILE__)
 
-#define DYNAMICO_TEST_FAIL(name)                                                \
+#define DYNAMICO_TEST_FAIL(name)                                               \
     fprintf(stderr,                                                            \
-            DYNAMICO_TERMINAL_YELLOW                                            \
-            "TEST " DYNAMICO_TERMINAL_GREEN name DYNAMICO_TERMINAL_RESET         \
-            " func(" DYNAMICO_TERMINAL_BLUE "%s" DYNAMICO_TERMINAL_RESET         \
-            "): %s " DYNAMICO_TERMINAL_RED "FAILED!" DYNAMICO_TERMINAL_RESET     \
+            DYNAMICO_TERMINAL_YELLOW                                           \
+            "TEST " DYNAMICO_TERMINAL_GREEN name DYNAMICO_TERMINAL_RESET       \
+            " func(" DYNAMICO_TERMINAL_BLUE "%s" DYNAMICO_TERMINAL_RESET       \
+            "): %s " DYNAMICO_TERMINAL_RED "FAILED!" DYNAMICO_TERMINAL_RESET   \
             "\n",                                                              \
             __func__, __FILE__)
 
-#define DYNAMICO_EVALUATE_TEST(name)                                            \
+#define DYNAMICO_EVALUATE_TEST(name)                                           \
     do                                                                         \
     {                                                                          \
         if (result == 1)                                                       \
         {                                                                      \
-            DYNAMICO_TEST_FAIL(name);                                           \
+            DYNAMICO_TEST_FAIL(name);                                          \
         }                                                                      \
         else                                                                   \
         {                                                                      \
-            DYNAMICO_TEST_PASS(name);                                           \
+            DYNAMICO_TEST_PASS(name);                                          \
         }                                                                      \
     } while (0)
 
@@ -183,8 +183,8 @@ int testArbituaryStruct()
         if (parent != NULL && current->id != parent->id + 1)
         {
             DYNAMICO_LOG_ERROR("Index: %d: Did not maintain order of "
-                              "rand_struct.\nCurrent: %d, Parent %d",
-                              i, current->id, parent->id + 1);
+                               "rand_struct.\nCurrent: %d, Parent %d",
+                               i, current->id, parent->id + 1);
             return_defer(1);
         }
         if (current->parent != NULL && parent != NULL &&
@@ -192,8 +192,8 @@ int testArbituaryStruct()
             current->parent != parent)
         {
             DYNAMICO_LOG_ERROR("Parent pointers do not point to same address: "
-                              "values\nIndex: %d current: %d, parent %d",
-                              i, current->parent->id, parent->id);
+                               "values\nIndex: %d current: %d, parent %d",
+                               i, current->parent->id, parent->id);
             return_defer(1);
         }
     }

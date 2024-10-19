@@ -16,25 +16,25 @@
 #define DYNAMICO_TERMINAL_RESET "\033[0m"
 #endif
 
-#define DYNAMICO_LOG_ERROR(format, ...)                                         \
+#define DYNAMICO_LOG_ERROR(format, ...)                                        \
     fprintf(stderr,                                                            \
-            DYNAMICO_TERMINAL_RED "ERROR" DYNAMICO_TERMINAL_RESET                \
-                                 ": %s:%d: " format "\n",                      \
-            __FILE__, __LINE__, ##__VA_ARGS__)
-
-#define DYNAMICO_LOG_INFO(format, ...)                                          \
-    fprintf(stderr,                                                            \
-            DYNAMICO_TERMINAL_BLUE "INFO" DYNAMICO_TERMINAL_RESET                \
+            DYNAMICO_TERMINAL_RED "ERROR" DYNAMICO_TERMINAL_RESET              \
                                   ": %s:%d: " format "\n",                     \
             __FILE__, __LINE__, ##__VA_ARGS__)
 
-#define DYNAMICO_LOG_WARN(format, ...)                                          \
-    fprintf(stdout,                                                            \
-            DYNAMICO_TERMINAL_YELLOW "INFO" DYNAMICO_TERMINAL_RESET              \
-                                    ": %s:%d: " format "\n",                   \
+#define DYNAMICO_LOG_INFO(format, ...)                                         \
+    fprintf(stderr,                                                            \
+            DYNAMICO_TERMINAL_BLUE "INFO" DYNAMICO_TERMINAL_RESET              \
+                                   ": %s:%d: " format "\n",                    \
             __FILE__, __LINE__, ##__VA_ARGS__)
 
-#define DYNAMICO_LOG_DEBUG(format, ...)                                         \
+#define DYNAMICO_LOG_WARN(format, ...)                                         \
+    fprintf(stdout,                                                            \
+            DYNAMICO_TERMINAL_YELLOW "INFO" DYNAMICO_TERMINAL_RESET            \
+                                     ": %s:%d: " format "\n",                  \
+            __FILE__, __LINE__, ##__VA_ARGS__)
+
+#define DYNAMICO_LOG_DEBUG(format, ...)                                        \
     fprintf(stdout, "INFO: %s:%d in function " format "\n", __FILE__,          \
             __LINE__, __func__##__VA_ARGS__)
 #endif
@@ -59,7 +59,6 @@
     } while (0)
 
 #endif
-
 
 #ifdef DYNAMICO_GENERATE_ALL
 #define DYNAMICO_GENERATE_ALLOCATOR
@@ -135,7 +134,7 @@
     }
 
 #else
-#define __generate_dynamico_shift(type, name) 
+#define __generate_dynamico_shift(type, name)
 #endif
 
 #ifdef DYNAMICO_GENERATE_AT
