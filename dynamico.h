@@ -56,6 +56,7 @@
     {                                                                          \
         if ((eval) == DYNAMICO_FAIL)                                           \
         {                                                                      \
+            result = eval;                                                     \
             goto defer;                                                        \
         }                                                                      \
     } while (0)
