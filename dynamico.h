@@ -1,6 +1,8 @@
 #ifndef _DYNAMICO_H
 #define _DYNAMICO_H
 
+#include <stddef.h>
+
 #define DYNAMICO_FAIL 1
 
 #ifdef DYNAMICO_LOGGING
@@ -107,7 +109,7 @@
                                            : dynamic_object->capacity * 2;     \
             dynamic_object->data =                                             \
                 realloc(dynamic_object->data,                                  \
-                        sizeof(type) * dynamic_object->capacity * 2);          \
+                        sizeof(type) * dynamic_object->capacity);              \
             if (dynamic_object->data == NULL)                                  \
             {                                                                  \
                 return_defer(DYNAMICO_FAIL);                                   \
@@ -178,4 +180,96 @@
                 __generate_dynamico_shift(type, name)                          \
                     __generate_dynamico_at(type, name)
 
+typedef struct
+{
+    void *items;
+    size_t size;
+    size_t capacity;
+    size_t item_size;
+} dynamico_Generic;
+
+int dynamico_Generic_init(dynamico_Generic *, size_t);
+int dynamico_Generic_append(dynamico_Generic *, void *item);
+void dynamico_Generic_free(dynamico_Generic *);
+void dynamico_Generic_shift(dynamico_Generic *);
+void *dynamico_Generic_at(dynamico_Generic *, size_t);
+
+#define DYNAMICO_MEMCPY(dst, src, sz)                                          \
+    do                                                                         \
+    {                                                                          \
+        for (unsigned int i = 0; i < sz; i++)                                  \
+        {                                                                      \
+            ((char *)dst)[i] = ((char *)src)[i];                               \
+        }                                                                      \
+    } while (0);
+
+#ifdef DYNAMICO_GENERIC_IMPLEMENTATION
+#include <stdlib.h>
+#include <string.h>
+int dynamico_Generic_init(dynamico_Generic *dynobj, size_t item_size)
+{
+    if (item_size < 0)
+    {
+        return DYNAMICO_FAIL;
+    }
+    dynobj->item_size = item_size;
+    dynobj->items = NULL;
+    dynobj->items = 0;
+    dynobj->capacity = 0;
+    return 0;
+}
+
+int dynamico_Generic_append(dynamico_Generic *dynobj, void *item)
+{
+    int result = 0;
+    if (dynobj->size >= dynobj->capacity)
+    {
+        size_t new_capacity = dynobj->capacity == 0 ? DYNAMICO_INIT_CAPACITY
+                                                    : dynobj->capacity * 2;
+        dynobj->items =
+            realloc(dynobj->items, new_capacity * sizeof(dynobj->item_size));
+        if (dynobj->items == NULL)
+        {
+            return_defer(1);
+        }
+        dynobj->capacity = new_capacity;
+    }
+    DYNAMICO_MEMCPY((char *)dynobj->items + dynobj->size * dynobj->item_size,
+                    item, dynobj->item_size);
+    dynobj->size++;
+
+defer:
+    return result;
+}
+
+void dynamico_Generic_free(dynamico_Generic *dynobj)
+{
+    free(dynobj->items);
+    dynobj->items = NULL;
+}
+
+void dynamico_Generic_shift(dynamico_Generic *dynobj)
+{
+    if (dynobj->size > 1)
+    {
+        for (size_t i = 1; i < dynobj->size; i++)
+        {
+            DYNAMICO_MEMCPY((char *)dynobj->items + (i - 1) * dynobj->item_size,
+                            (char *)dynobj->items + i * dynobj->item_size,
+                            dynobj->item_size);
+        }
+        dynobj->size--;
+    }
+}
+
+void *dynamico_Generic_at(dynamico_Generic *dynobj, size_t index)
+{
+    if (index >= dynobj->size || index < 0)
+    {
+        return NULL;
+    }
+    return (char *)dynobj->items + index * dynobj->item_size;
+}
+
+#endif
 #endif
