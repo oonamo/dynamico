@@ -77,7 +77,6 @@
 #define DYNAMICO_INIT_CAPACITY 15
 #endif
 
-#ifdef DYNAMICO_GENERATE_ALLOCATOR
 #define __generate_dynamico_allocator(type, name)                              \
     int dynamico_##name##_init(dynamico_##name *dynamic_object)                \
     {                                                                          \
@@ -93,11 +92,7 @@
     defer:                                                                     \
         return result;                                                         \
     }
-#else
-#define __generate_dynamico_allocator(type, name)
-#endif
 
-#ifdef DYNAMICO_GENERATE_APPEND
 #define __generate_dynamico_appender(type, name)                               \
     int dynamico_##name##_append(dynamico_##name *dynamic_object, type obj)    \
     {                                                                          \
@@ -120,11 +115,6 @@
         return result;                                                         \
     }
 
-#else
-#define __generate_dynamico_appender(type, name)
-#endif
-
-#ifdef DYNAMICO_GENERATE_SHIFT
 #define __generate_dynamico_shift(type, name)                                  \
     void dynamico_##name##_shift(dynamico_##name *dynamic_object)              \
     {                                                                          \
@@ -138,11 +128,6 @@
         }                                                                      \
     }
 
-#else
-#define __generate_dynamico_shift(type, name)
-#endif
-
-#ifdef DYNAMICO_GENERATE_AT
 #define __generate_dynamico_at(type, name)                                     \
     void *dynamico_##name##_at(dynamico_##name *dynamic_object, size_t index)  \
     {                                                                          \
@@ -154,19 +139,14 @@
         return data;                                                           \
     }
 
-#endif
-
-#ifdef DYNAMICO_GENERATE_FREE
 #define __generate_dynamico_free(type, name)                                   \
     void dynamico_##name##_free(dynamico_##name *dynamic_object)               \
     {                                                                          \
         free(dynamic_object->data);                                            \
         dynamic_object->data = NULL;                                           \
     }
-#else
-#define __generate_dynamico_free(type, name)
-#endif
 
+#ifdef DYNAMICO_GENERERATE_ONCE_ALL
 #define newDynamicoType(type, name)                                            \
     typedef struct                                                             \
     {                                                                          \
@@ -179,6 +159,23 @@
             __generate_dynamico_free(type, name)                               \
                 __generate_dynamico_shift(type, name)                          \
                     __generate_dynamico_at(type, name)
+#else
+#define newDynamicoType(type, name)                                            \
+    typedef struct                                                             \
+    {                                                                          \
+        type *data;                                                            \
+        size_t size;                                                           \
+        size_t capacity;                                                       \
+    } dynamico_##name;
+
+#endif
+
+#define __generate_dynamico_prototypes(type, name)                             \
+    int dynamico_##name##_init(dynamico_##name *dynamic_object);               \
+    int dynamico_##name##_append(dynamico_##name *dynamic_object, type obj);   \
+    void dynamico_##name##_shift(dynamico_##name *dynamic_object);             \
+    void *dynamico_##name##_at(dynamico_##name *dynamic_object, size_t index); \
+    void dynamico_##name##_free(dynamico_##name *dynamic_object);
 
 typedef struct
 {

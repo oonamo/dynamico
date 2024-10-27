@@ -1,4 +1,4 @@
-#define DYNAMICO_GENERATE_ALL
+#define DYNAMICO_GENERERATE_ONCE_ALL
 #include <stdio.h>
 #include <stdlib.h>
 #include "test.h"
